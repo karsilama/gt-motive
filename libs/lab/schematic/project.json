@@ -1,0 +1,40 @@
+{
+  "name": "lab-schematics",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/lab/schematics/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/lab/schematics",
+        "main": "libs/lab/schematics/src/index.ts",
+        "tsConfig": "libs/lab/schematics/tsconfig.lib.json",
+        "assets": [
+          "libs/lab/schematics/*.md",
+          {
+            "input": "./libs/lab/schematics/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/lab/schematics/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/lab/schematics",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/lab/schematics",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    }
+  }
+}

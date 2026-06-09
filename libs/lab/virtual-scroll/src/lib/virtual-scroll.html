@@ -1,0 +1,31 @@
+<div
+  class="flex flex-col w-full h-full bg-white rounded-lg border border-gray-200"
+>
+  <div
+    class="flex-shrink-0 bg-gray-100 border-b-2 border-gray-200 font-semibold text-sm"
+  >
+    <div class="flex items-center h-14 px-4 gap-4">
+      <div class="w-[80px] text-gray-600">#</div>
+      <div class="w-[100px] text-gray-600">Mark ID</div>
+      <div class="flex-1 text-gray-600">Mark Name</div>
+    </div>
+  </div>
+
+  <cdk-virtual-scroll-viewport itemSize="50" class="flex-1 w-full h-full">
+    <div
+      *cdkVirtualFor="let item of dataSource(); let i = index; trackBy: trackByItem"
+      class="flex items-center h-14 px-4 gap-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-gray-50"
+      (click)="onItemSelect(item.id)"
+    >
+      <div class="w-[80px] text-gray-500 text-sm">{{ i + 1 }}</div>
+      <div
+        class="w-[100px] font-mono text-blue-600 text-sm"
+        [innerHTML]="item.id | highlight : searchTerm()"
+      ></div>
+      <div
+        class="flex-1 font-medium text-gray-800"
+        [innerHTML]="item.description | highlight : searchTerm()"
+      ></div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</div>

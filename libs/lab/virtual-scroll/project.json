@@ -1,0 +1,13 @@
+{
+  "name": "lab-virtual-scroll",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/lab/virtual-scroll/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["scope:libs", "type:feature"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

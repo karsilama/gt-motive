@@ -1,0 +1,27 @@
+@keyframes gtPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    letter-spacing: 2px;
+  }
+  50% {
+    opacity: 1;
+    letter-spacing: 6px;
+  }
+}
+
+.gt-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 20px;
+  font-family: monospace;
+}
+
+.gt-motive-text {
+  font-size: 14px;
+  color: #666;
+  animation: gtPulse 1.5s ease-in-out infinite;
+}

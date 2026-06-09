@@ -1,0 +1,20 @@
+@if (loaded() ) {
+
+<lab-form-text-control
+  label="Find a brand"
+  placeholder="Filter by mark name or mark id"
+  hint="Available brands catalog"
+  iconSuffix="search"
+  [searchTerm]="searchTerm"
+></lab-form-text-control>
+
+<div class="flex flex-1">
+  <lab-virtual-scroll [dataSource]="dataSource()" [searchTerm]="searchTerm()">
+  </lab-virtual-scroll>
+</div>
+} @else {
+<div class="w-full flex h-full justify-center">
+  <lab-loading></lab-loading>
+</div>
+
+}

@@ -1,0 +1,8 @@
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { <%= className %>Routes } from './<%= name %>-routes';
+
+@NgModule({
+  imports: [RouterModule.forChild(<%= className %>Routes)],
+})
+export class <%= className %>FeatureModule {}

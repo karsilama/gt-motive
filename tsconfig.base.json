@@ -1,0 +1,37 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2022",
+    "module": "esnext",
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "strict": true,
+    "skipDefaultLibCheck": true,
+    "types": ["jest"],
+    "baseUrl": ".",
+    "paths": {
+      "@lab/virtual-scroll": ["./libs/lab/virtual-scroll/src/index.ts"],
+      "@lab/forms/feature": ["libs/lab/forms/feature/src/index.ts"],
+      "@lab/forms/ui": ["libs/lab/forms/ui/src/index.ts"],
+      "@lab/button/ui": ["./libs/lab/button/ui/src/index.ts"],
+      "@lab/ui": ["./libs/lab/ui/src/index.ts"],
+      "@lab/util": ["./libs/lab/util/src/index.ts"],
+      "@configuration/domain": ["./libs/configuration/domain/src/index.ts"],
+      "@configuration/infrastructure": [
+        "./libs//configuration/infrastructure/src/index.ts"
+      ],
+      "@brands/domain": ["./libs/brands/domain/src/index.ts"],
+      "@brands/feature": ["./libs/brands/feature/src/index.ts"],
+      "@error/domain": ["./libs/error/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

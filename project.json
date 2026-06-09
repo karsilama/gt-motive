@@ -21,7 +21,13 @@
             "input": "public"
           }
         ],
-        "styles": ["./src/styles.scss"]
+        "fileReplacements": [
+          {
+            "replace": "apps/profile/src/environments/environment.ts",
+            "with": "apps/profile/src/environments/environment.production.ts"
+          }
+        ],
+        "styles": ["apps/profile/src/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -42,7 +48,13 @@
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/profile/src/environments/environment.ts",
+              "with": "apps/profile/src/environments/environment.development.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"

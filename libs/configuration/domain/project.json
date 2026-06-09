@@ -1,0 +1,13 @@
+{
+  "name": "configuration-domain",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "configuration/domain/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["scope:configuration", "type:domain"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

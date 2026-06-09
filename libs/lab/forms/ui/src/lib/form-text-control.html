@@ -1,0 +1,26 @@
+<mat-form-field class="relative w-full">
+  <mat-label>{{ label() }}</mat-label>
+  <input
+    matInput
+    placeholder="{{ placeholder() }}"
+    type="text"
+    [value]="value()"
+    (input)="onInput($event)"
+    class="indent-[16px]"
+  />
+  @if (iconSuffix()) {
+  <mat-icon matSuffix>{{ iconSuffix() }}</mat-icon>
+  }
+  <mat-hint>{{ hint() }}</mat-hint>
+
+  @if (showClearField()) {
+  <button
+    matFab
+    class="absolute right-[16px]"
+    aria-label="Clear text field"
+    (click)="onClearField()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  }
+</mat-form-field>

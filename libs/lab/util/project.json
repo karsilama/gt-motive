@@ -1,0 +1,21 @@
+{
+  "name": "lab-util",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/lab/util/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["scope:lab", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/lab/util/jest.config.cts",
+        "tsConfig": "libs/lab/util/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
