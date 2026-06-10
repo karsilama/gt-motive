@@ -21,8 +21,21 @@ export class BrandsEffects implements OnInitEffects {
     this.actions$.pipe(
       ofType(BrandsActions.getBrandById),
       switchMap(({ Make_ID }) => {
-        const baseUrl = this.configuration.getBaseConfiguration().api.url;
+        const cacheKey = `brand_${Make_ID}`;
+        const cached = localStorage.getItem(cacheKey);
 
+        if (cached) {
+          const { vehicleTypes, models } = JSON.parse(cached);
+          return of(
+            BrandsActions.getBrandByIdSuccess({
+              vehicleTypes,
+              models,
+              Make_ID,
+            }),
+          );
+        }
+
+        const baseUrl = this.configuration.getBaseConfiguration().api.url;
         const vehicleTypesUrl = `${baseUrl}/vehicles/GetVehicleTypesForMakeId/${Make_ID}?format=json`;
         const modelsUrl = `${baseUrl}/vehicles/GetModelsForMakeId/${Make_ID}?format=json`;
 
@@ -30,13 +43,20 @@ export class BrandsEffects implements OnInitEffects {
           vehicleTypes: this.http.get<VehicleTypesResponse>(vehicleTypesUrl),
           models: this.http.get<ModelsResponse>(modelsUrl),
         }).pipe(
-          map(({ vehicleTypes, models }) =>
-            BrandsActions.getBrandByIdSuccess({
+          map(({ vehicleTypes, models }) => {
+            localStorage.setItem(
+              cacheKey,
+              JSON.stringify({
+                vehicleTypes: vehicleTypes.Results,
+                models: models.Results,
+              }),
+            );
+            return BrandsActions.getBrandByIdSuccess({
               vehicleTypes: vehicleTypes.Results,
               models: models.Results,
               Make_ID,
-            }),
-          ),
+            });
+          }),
           catchError((error) =>
             of(BrandsActions.getBrandByIdFailure({ error: error.message })),
           ),
