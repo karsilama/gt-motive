@@ -2,7 +2,7 @@ import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 
 import * as BrandsActions from './brands.actions';
-import { BrandEntity } from './brands.models';
+import { BrandEntity, BrandSelected } from './brands.models';
 
 export const BRANDS_FEATURE_KEY = 'brands';
 
@@ -10,6 +10,7 @@ export interface BrandsState extends EntityState<BrandEntity> {
   selectedId?: string | number; // which Brands record has been selected
   loaded: boolean; // has the Brands list been loaded
   error?: string | null; // last known error (if any)
+  brandSelected: BrandSelected | null;
 }
 
 export interface BrandsPartialState {
@@ -24,6 +25,7 @@ export const brandsAdapter: EntityAdapter<BrandEntity> =
 
 export const initialBrandsState: BrandsState = brandsAdapter.getInitialState({
   loaded: false,
+  brandSelected: null,
 });
 
 const reducer = createReducer(
@@ -39,6 +41,10 @@ const reducer = createReducer(
   on(BrandsActions.loadBrandsFailure, (state, { error }) => ({
     ...state,
     error,
+  })),
+  on(BrandsActions.getBrandByIdSuccess, (state, { vehicleTypes, models }) => ({
+    ...state,
+    brandSelected: { vehicleTypes, models },
   })),
 );
 

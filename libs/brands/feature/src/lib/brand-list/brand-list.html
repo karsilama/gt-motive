@@ -9,7 +9,11 @@
 ></lab-form-text-control>
 
 <div class="flex flex-1">
-  <lab-virtual-scroll [dataSource]="dataSource()" [searchTerm]="searchTerm()">
+  <lab-virtual-scroll
+    (itemSelected)="onBrandSelected($event)"
+    [dataSource]="dataSource()"
+    [searchTerm]="searchTerm()"
+  >
   </lab-virtual-scroll>
 </div>
 } @else {

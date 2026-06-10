@@ -41,3 +41,8 @@ export const selectEntity = createSelector(
   selectSelectedId,
   (entities, selectedId) => (selectedId ? entities[selectedId] : undefined),
 );
+
+export const selectBrandSelected = createSelector(
+  selectBrandsState,
+  (state: BrandsState) => state.brandSelected,
+);

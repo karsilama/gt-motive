@@ -5,6 +5,7 @@ import {
   inject,
   model,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { BrandsFacade } from '@brands/domain';
 import { LabFormTextControl } from '@lab/forms/ui';
 import { LabLoading } from '@lab/ui';
@@ -21,9 +22,10 @@ import { LabVirtualItem, LabVirtualScroll } from '@lab/virtual-scroll';
   standalone: true,
 })
 export class BrandList {
-  public searchTerm = model<string>('');
-
   public brandsFacade = inject(BrandsFacade);
+  public router = inject(Router);
+
+  public searchTerm = model<string>('');
 
   public readonly displayedColumns = ['Mark_ID', 'Mark_Name'];
 
@@ -49,4 +51,8 @@ export class BrandList {
         );
       }),
   );
+
+  public onBrandSelected(id: string) {
+    this.router.navigate([`/brands/${id}`]);
+  }
 }

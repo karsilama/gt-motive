@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { AbstractButton } from "./button.abstract";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { AbstractButton } from './button.abstract';
 
 @Component({
-  selector: "lab-button",
+  selector: 'lab-button',
   imports: [MatIconModule, MatButtonModule],
   template: `
     <button
