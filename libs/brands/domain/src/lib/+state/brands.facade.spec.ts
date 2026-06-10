@@ -1,96 +1,87 @@
-import { NgModule } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { Store, StoreModule } from '@ngrx/store';
-import { firstValueFrom } from 'rxjs';
-
+import { MemoizedSelector, Store } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import * as BrandsActions from './brands.actions';
-import { BrandsEffects } from './brands.effects';
 import { BrandsFacade } from './brands.facade';
-import { BrandEntity } from './brands.models';
-import {
-  BRANDS_FEATURE_KEY,
-  brandsReducer,
-  BrandsState,
-} from './brands.reducer';
-
-interface TestSchema {
-  brands: BrandsState;
-}
+import { BrandEntity, BrandSelected } from './brands.models';
+import * as BrandsSelectors from './brands.selectors';
 
 describe('BrandsFacade', () => {
   let facade: BrandsFacade;
-  let store: Store<TestSchema>;
-  const createBrandEntity = (id: string, name = ''): BrandEntity => ({
-    id,
-    name: name || `name-${id}`,
+  let store: MockStore;
+  let mockAllBrandsSelector: MemoizedSelector<object, BrandEntity[]>;
+  let mockLoadedSelector: MemoizedSelector<object, boolean>;
+  let mockBrandSelectedSelector: MemoizedSelector<object, BrandSelected | null>;
+
+  const mockBrands: BrandEntity[] = [
+    { Make_ID: '440', Make_Name: 'ASTON MARTIN' },
+    { Make_ID: '441', Make_Name: 'TESLA' },
+  ];
+
+  const mockBrandSelected: BrandSelected = {
+    vehicleTypes: [{ VehicleTypeId: 2, VehicleTypeName: 'Passenger Car' }],
+    models: [
+      {
+        Make_ID: 440,
+        Make_Name: 'ASTON MARTIN',
+        Model_ID: 101,
+        Model_Name: 'DB9',
+      },
+    ],
+  };
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [BrandsFacade, provideMockStore()],
+    });
+
+    facade = TestBed.inject(BrandsFacade);
+    store = TestBed.inject(Store) as MockStore;
+
+    mockAllBrandsSelector = store.overrideSelector(
+      BrandsSelectors.selectAllBrands,
+      mockBrands,
+    );
+    mockLoadedSelector = store.overrideSelector(
+      BrandsSelectors.selectBrandsLoaded,
+      true,
+    );
+    mockBrandSelectedSelector = store.overrideSelector(
+      BrandsSelectors.selectBrandSelected,
+      mockBrandSelected,
+    );
+
+    store.refreshState();
   });
 
-  describe('used in NgModule', () => {
-    beforeEach(() => {
-      @NgModule({
-        imports: [
-          StoreModule.forFeature(BRANDS_FEATURE_KEY, brandsReducer),
-          EffectsModule.forFeature([BrandsEffects]),
-        ],
-        providers: [BrandsFacade],
-      })
-      class CustomFeatureModule {}
+  it('should be created', () => {
+    expect(facade).toBeTruthy();
+  });
 
-      @NgModule({
-        imports: [
-          StoreModule.forRoot({}),
-          EffectsModule.forRoot([]),
-          CustomFeatureModule,
-        ],
-      })
-      class RootModule {}
-      TestBed.configureTestingModule({ imports: [RootModule] });
-
-      store = TestBed.inject(Store);
-      facade = TestBed.inject(BrandsFacade);
+  describe('selectors', () => {
+    it('should expose allBrands as signal', () => {
+      expect(facade.allBrands()).toEqual(mockBrands);
     });
 
-    /**
-     * The initially generated facade::loadAll() returns empty array
-     */
-    it('loadAll() should return empty list with loaded == true', async () => {
-      let list = await firstValueFrom(facade.allBrands$);
-      let isLoaded = await firstValueFrom(facade.loaded$);
-
-      expect(list.length).toBe(0);
-      expect(isLoaded).toBe(false);
-
-      facade.init();
-
-      list = await firstValueFrom(facade.allBrands$);
-      isLoaded = await firstValueFrom(facade.loaded$);
-
-      expect(list.length).toBe(0);
-      expect(isLoaded).toBe(true);
+    it('should expose loaded as signal', () => {
+      expect(facade.loaded()).toBe(true);
     });
 
-    /**
-     * Use `loadBrandsSuccess` to manually update list
-     */
-    it('allBrands$ should return the loaded list; and loaded flag == true', async () => {
-      let list = await firstValueFrom(facade.allBrands$);
-      let isLoaded = await firstValueFrom(facade.loaded$);
+    it('should expose brandSelected as signal', () => {
+      expect(facade.brandSelected()).toEqual(mockBrandSelected);
+    });
+  });
 
-      expect(list.length).toBe(0);
-      expect(isLoaded).toBe(false);
+  describe('getBrandsById', () => {
+    it('should dispatch getBrandById action with Make_ID', () => {
+      const makeId = '440';
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-      store.dispatch(
-        BrandsActions.loadBrandsSuccess({
-          brands: [createBrandEntity('AAA'), createBrandEntity('BBB')],
-        }),
+      facade.getBrandsById(makeId);
+
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        BrandsActions.getBrandById({ Make_ID: makeId }),
       );
-
-      list = await firstValueFrom(facade.allBrands$);
-      isLoaded = await firstValueFrom(facade.loaded$);
-
-      expect(list.length).toBe(2);
-      expect(isLoaded).toBe(true);
     });
   });
 });

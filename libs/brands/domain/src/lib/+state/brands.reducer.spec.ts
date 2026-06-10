@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-
 import * as BrandsActions from './brands.actions';
 import { BrandEntity } from './brands.models';
 import {
@@ -29,6 +28,51 @@ describe('Brands Reducer', () => {
 
       expect(result.loaded).toBe(true);
       expect(result.ids.length).toBe(2);
+      expect(result.entities['12345']).toEqual(brands[0]);
+      expect(result.entities['12346']).toEqual(brands[1]);
+    });
+
+    it('loadBrandsFailure should set error', () => {
+      const error = 'Network error';
+      const action = BrandsActions.loadBrandsFailure({ error });
+
+      const result: BrandsState = brandsReducer(initialBrandsState, action);
+
+      expect(result.error).toBe(error);
+      expect(result.loaded).toBe(false);
+    });
+
+    it('initBrands should reset loaded to false', () => {
+      const state = { ...initialBrandsState, loaded: true };
+      const action = BrandsActions.initBrands();
+
+      const result: BrandsState = brandsReducer(state, action);
+
+      expect(result.loaded).toBe(false);
+      expect(result.error).toBeNull();
+    });
+
+    it('getBrandByIdSuccess should set brandSelected', () => {
+      const vehicleTypes = [
+        { VehicleTypeId: 2, VehicleTypeName: 'Passenger Car' },
+      ];
+      const models = [
+        {
+          Make_ID: 440,
+          Make_Name: 'ASTON MARTIN',
+          Model_ID: 101,
+          Model_Name: 'DB9',
+        },
+      ];
+      const action = BrandsActions.getBrandByIdSuccess({
+        Make_ID: '440',
+        vehicleTypes,
+        models,
+      });
+
+      const result: BrandsState = brandsReducer(initialBrandsState, action);
+
+      expect(result.brandSelected).toEqual({ vehicleTypes, models });
     });
   });
 

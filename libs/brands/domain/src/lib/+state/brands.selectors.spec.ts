@@ -1,66 +1,127 @@
-import { BrandEntity } from './brands.models';
+import { TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { BrandEntity, BrandSelected } from './brands.models';
 import {
   brandsAdapter,
-  BrandsPartialState,
+  BrandsState,
   initialBrandsState,
 } from './brands.reducer';
-import * as BrandsSelectors from './brands.selectors';
+import {
+  selectAllBrands,
+  selectBrandSelected,
+  selectBrandsEntities,
+  selectBrandsError,
+  selectBrandsLoaded,
+  selectEntity,
+  selectSelectedId,
+} from './brands.selectors';
 
 describe('Brands Selectors', () => {
-  const ERROR_MSG = 'No Error Available';
-  const getBrandsId = (it: BrandEntity) => it.id;
-  const createBrandEntity = (id: string, name = '') =>
-    ({
-      id,
-      name: name || `name-${id}`,
-    }) as BrandEntity;
+  let store: MockStore;
+  let state: BrandsState;
 
-  let state: BrandsPartialState;
+  const mockBrands: BrandEntity[] = [
+    { Make_ID: '440', Make_Name: 'ASTON MARTIN' },
+    { Make_ID: '441', Make_Name: 'TESLA' },
+  ];
+
+  const mockBrandSelected: BrandSelected = {
+    vehicleTypes: [{ VehicleTypeId: 2, VehicleTypeName: 'Passenger Car' }],
+    models: [
+      {
+        Make_ID: 440,
+        Make_Name: 'ASTON MARTIN',
+        Model_ID: 101,
+        Model_Name: 'DB9',
+      },
+    ],
+  };
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore()],
+    });
+
+    store = TestBed.inject(Store) as MockStore;
     state = {
-      brands: brandsAdapter.setAll(
-        [
-          createBrandEntity('PRODUCT-AAA'),
-          createBrandEntity('PRODUCT-BBB'),
-          createBrandEntity('PRODUCT-CCC'),
-        ],
-        {
-          ...initialBrandsState,
-          selectedId: 'PRODUCT-BBB',
-          error: ERROR_MSG,
-          loaded: true,
-        },
-      ),
+      ...brandsAdapter.setAll(mockBrands, initialBrandsState),
+      loaded: true,
+      error: null,
+      selectedId: '440',
+      brandSelected: mockBrandSelected,
     };
+
+    store.overrideSelector(selectBrandsLoaded, state.loaded);
+    store.overrideSelector(selectBrandsError, state.error);
+    store.overrideSelector(selectAllBrands, mockBrands);
+    store.overrideSelector(selectBrandsEntities, {
+      '440': mockBrands[0],
+      '441': mockBrands[1],
+    });
+    store.overrideSelector(selectSelectedId, '440');
+    store.overrideSelector(selectBrandSelected, mockBrandSelected);
+    store.refreshState();
   });
 
-  describe('Brands Selectors', () => {
-    it('selectAllBrands() should return the list of Brands', () => {
-      const results = BrandsSelectors.selectAllBrands(state);
-      const selId = getBrandsId(results[1]);
-
-      expect(results.length).toBe(3);
-      expect(selId).toBe('PRODUCT-BBB');
-    });
-
-    it('selectEntity() should return the selected Entity', () => {
-      const result = BrandsSelectors.selectEntity(state) as BrandEntity;
-      const selId = getBrandsId(result);
-
-      expect(selId).toBe('PRODUCT-BBB');
-    });
-
-    it('selectBrandsLoaded() should return the current "loaded" status', () => {
-      const result = BrandsSelectors.selectBrandsLoaded(state);
-
+  describe('selectBrandsLoaded', () => {
+    it('should return the loaded state', () => {
+      const result = selectBrandsLoaded.projector(state);
       expect(result).toBe(true);
     });
+  });
 
-    it('selectBrandsError() should return the current "error" state', () => {
-      const result = BrandsSelectors.selectBrandsError(state);
+  describe('selectBrandsError', () => {
+    it('should return the error state', () => {
+      const errorState = { ...state, error: 'Network error' };
+      const result = selectBrandsError.projector(errorState);
+      expect(result).toBe('Network error');
+    });
+  });
 
-      expect(result).toBe(ERROR_MSG);
+  describe('selectAllBrands', () => {
+    it('should return all brands', () => {
+      const result = selectAllBrands.projector(state);
+      expect(result).toEqual(mockBrands);
+      expect(result.length).toBe(2);
+    });
+  });
+
+  describe('selectBrandsEntities', () => {
+    it('should return entities dictionary', () => {
+      const result = selectBrandsEntities.projector(state);
+      expect(result).toEqual({
+        '440': mockBrands[0],
+        '441': mockBrands[1],
+      });
+    });
+  });
+
+  describe('selectSelectedId', () => {
+    it('should return selectedId', () => {
+      const result = selectSelectedId.projector(state);
+      expect(result).toBe('440');
+    });
+  });
+
+  describe('selectEntity', () => {
+    it('should return selected entity when selectedId exists', () => {
+      const entities = { '440': mockBrands[0] };
+      const result = selectEntity.projector(entities, '440');
+      expect(result).toEqual(mockBrands[0]);
+    });
+
+    it('should return undefined when selectedId does not exist', () => {
+      const entities = { '440': mockBrands[0] };
+      const result = selectEntity.projector(entities, '999');
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('selectBrandSelected', () => {
+    it('should return brandSelected', () => {
+      const result = selectBrandSelected.projector(state);
+      expect(result).toEqual(mockBrandSelected);
     });
   });
 });
