@@ -96,6 +96,15 @@
         "staticFilePath": "dist/gt-motive/browser",
         "spa": true
       }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "gt-motive:build",
+        "outputPath": "src/locale/messages.json",
+        "format": "json",
+        "sourceLocale": "en"
+      }
     }
   }
 }
