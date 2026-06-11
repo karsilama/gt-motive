@@ -60,6 +60,8 @@ Each library follows a similar structure:
 - Dependencies between `libs` should be explicit and managed by Nx.
 
 
+```
+
      _                      _                 ____ _     ___
     / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
    / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
@@ -99,3 +101,5 @@ Operating System  : darwin arm64
 │ typescript                        │ 5.9.3             │ ~5.9.0            │
 │ zone.js                           │ 0.14.10           │ ~0.14.0           │
 └───────────────────────────────────┴───────────────────┴───────────────────┘
+
+```;
