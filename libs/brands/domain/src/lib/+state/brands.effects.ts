@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ConfigurationService } from '@configuration/domain';
+import { StorageService } from '@lab/storage';
 import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
 import { catchError, debounceTime, forkJoin, map, of, switchMap } from 'rxjs';
 import * as BrandsActions from './brands.actions';
 import {
   BrandResponse,
+  ModelResult,
   ModelsResponse,
+  VehicleTypeResult,
   VehicleTypesResponse,
 } from './brands.models';
 
@@ -16,16 +19,20 @@ export class BrandsEffects implements OnInitEffects {
 
   private actions$ = inject(Actions);
   private http = inject(HttpClient);
+  private storage = inject(StorageService);
 
   public getBrandById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BrandsActions.getBrandById),
       switchMap(({ Make_ID }) => {
         const cacheKey = `brand_${Make_ID}`;
-        const cached = localStorage.getItem(cacheKey);
+        const cached = this.storage.getItem<{
+          vehicleTypes: VehicleTypeResult[];
+          models: ModelResult[];
+        }>(cacheKey);
 
         if (cached) {
-          const { vehicleTypes, models } = JSON.parse(cached);
+          const { vehicleTypes, models } = cached;
           return of(
             BrandsActions.getBrandByIdSuccess({
               vehicleTypes,
@@ -44,16 +51,12 @@ export class BrandsEffects implements OnInitEffects {
           models: this.http.get<ModelsResponse>(modelsUrl),
         }).pipe(
           map(({ vehicleTypes, models }) => {
-            localStorage.setItem(
-              cacheKey,
-              JSON.stringify({
-                vehicleTypes: vehicleTypes.Results,
-                models: models.Results,
-              }),
-            );
+            const vt = vehicleTypes.Results ?? [];
+            const md = models.Results ?? [];
+            this.storage.setItem(cacheKey, { vehicleTypes: vt, models: md });
             return BrandsActions.getBrandByIdSuccess({
-              vehicleTypes: vehicleTypes.Results,
-              models: models.Results,
+              vehicleTypes: vt,
+              models: md,
               Make_ID,
             });
           }),

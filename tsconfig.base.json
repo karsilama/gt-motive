@@ -19,6 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "@lab/virtual-scroll": ["./libs/lab/virtual-scroll/src/index.ts"],
+      "@lab/storage": ["./libs/lab/storage/src/index.ts"],
       "@lab/forms/feature": ["libs/lab/forms/feature/src/index.ts"],
       "@lab/forms/ui": ["libs/lab/forms/ui/src/index.ts"],
       "@lab/button/ui": ["./libs/lab/button/ui/src/index.ts"],

@@ -19,7 +19,7 @@ export const getBrandByIdSuccess = createAction(
 
 export const getBrandByIdFailure = createAction(
   '[Brands/API] Get Brands by ID Failure',
-  props<{ error: any }>(),
+  props<{ error: string }>(),
 );
 
 export const loadBrandsSuccess = createAction(
@@ -29,7 +29,7 @@ export const loadBrandsSuccess = createAction(
 
 export const loadBrandsFailure = createAction(
   '[Brands/API] Load Brands Failure',
-  props<{ error: any }>(),
+  props<{ error: string }>(),
 );
 
 export const reloadBrands = createAction('[Brands/API] Reload brands');

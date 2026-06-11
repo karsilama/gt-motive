@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ConfigurationService } from '@configuration/domain';
+import { StorageService } from '@lab/storage';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -18,6 +19,11 @@ describe('BrandsEffects', () => {
   let effects: BrandsEffects;
   let httpClientMock: jest.Mocked<HttpClient>;
   let configurationServiceMock: jest.Mocked<ConfigurationService>;
+  let storageMock: {
+    getItem: jest.Mock;
+    setItem: jest.Mock;
+    removeItem: jest.Mock;
+  };
 
   const mockBaseUrl = 'https://vpic.nhtsa.dot.gov/api';
 
@@ -27,6 +33,12 @@ describe('BrandsEffects', () => {
     httpClientMock = {
       get: jest.fn(),
     } as any;
+
+    storageMock = {
+      getItem: jest.fn(),
+      setItem: jest.fn(),
+      removeItem: jest.fn(),
+    };
 
     configurationServiceMock = {
       getBaseConfiguration: jest.fn(),
@@ -41,6 +53,8 @@ describe('BrandsEffects', () => {
         provideMockActions(() => actions$),
         provideMockStore(),
         { provide: HttpClient, useValue: httpClientMock },
+        // provide a simple in-memory storage mock to avoid touching window.localStorage
+        { provide: StorageService, useValue: storageMock },
         { provide: ConfigurationService, useValue: configurationServiceMock },
       ],
     });
@@ -128,8 +142,10 @@ describe('BrandsEffects', () => {
     }));
 
     beforeEach(() => {
-      localStorage.clear();
       jest.clearAllMocks();
+      storageMock.getItem.mockClear();
+      storageMock.setItem.mockClear();
+      storageMock.removeItem.mockClear();
     });
 
     it('should dispatch success with data from cache if present', () => {
@@ -138,7 +154,7 @@ describe('BrandsEffects', () => {
         vehicleTypes: expectedVehicleTypes,
         models: expectedModels,
       };
-      localStorage.setItem(cacheKey, JSON.stringify(cachedData));
+      storageMock.getItem.mockReturnValueOnce(cachedData);
 
       actions$ = of(BrandsActions.getBrandById({ Make_ID: makeIdString }));
 
@@ -178,9 +194,7 @@ describe('BrandsEffects', () => {
       );
 
       const cacheKey = `brand_${makeIdString}`;
-      const cached = localStorage.getItem(cacheKey);
-      expect(cached).toBeTruthy();
-      expect(JSON.parse(cached!)).toEqual({
+      expect(storageMock.setItem).toHaveBeenCalledWith(cacheKey, {
         vehicleTypes: expectedVehicleTypes,
         models: expectedModels,
       });

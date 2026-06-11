@@ -1,0 +1,8 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "name": "lab-storage",
+  "root": "libs/lab/storage",
+  "sourceRoot": "libs/lab/storage/src",
+  "projectType": "library",
+  "targets": {}
+}

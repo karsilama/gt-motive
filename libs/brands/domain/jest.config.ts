@@ -25,6 +25,8 @@ export default {
       '<rootDir>/../../configuration/domain/src/index.ts',
     '^@configuration/infrastructure$':
       '<rootDir>/../../configuration/infrastructure/src/index.ts',
+    '^@lab/storage$': '<rootDir>/../../lab/storage/src/index.ts',
+    '^@lab/storage/(.*)$': '<rootDir>/../../lab/storage/src/$1',
   },
   transformIgnorePatterns: ['node_modules/(?!(@ngrx|@angular|rxjs)/)'],
   coverageDirectory: '../../coverage/libs/brands/domain',
