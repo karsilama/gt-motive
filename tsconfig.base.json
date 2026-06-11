@@ -26,7 +26,7 @@
       "@lab/util": ["./libs/lab/util/src/index.ts"],
       "@configuration/domain": ["./libs/configuration/domain/src/index.ts"],
       "@configuration/infrastructure": [
-        "./libs//configuration/infrastructure/src/index.ts"
+        "./libs/configuration/infrastructure/src/index.ts"
       ],
       "@brands/domain": ["./libs/brands/domain/src/index.ts"],
       "@brands/feature": ["./libs/brands/feature/src/index.ts"],
