@@ -32,7 +32,7 @@ export class BrandList {
 
   public loaded = this.brandsFacade.loaded;
 
-  public hint = $localize`:@@BRAND_LIST_FIND_AVAILABLE_BRANDS_HINT`;
+  public hint = $localize`:@@BRAND_LIST_FIND_AVAILABLE_BRANDS_HINT:Find available brands catalog`;
 
   public dataSource = computed(() =>
     this.brandsFacade
