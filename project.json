@@ -4,8 +4,9 @@
   "includedScripts": [],
   "projectType": "application",
   "prefix": "app",
+  "root": ".",
   "sourceRoot": "./src",
-  "tags": [],
+  "tags": ["type:app"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
