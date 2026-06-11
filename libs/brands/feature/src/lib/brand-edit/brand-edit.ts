@@ -17,6 +17,7 @@ export class BrandEdit {
   public brandsFacade = inject(BrandsFacade);
 
   public brandSelected = this.brandsFacade.brandSelected;
+  public brandSelectedLoaded = this.brandsFacade.brandSelectedLoaded;
 
   constructor() {
     this.brandsFacade.getBrandsById(this.route.snapshot.params['id']);

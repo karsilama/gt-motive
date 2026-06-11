@@ -7,13 +7,14 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { BrandsFacade } from '@brands/domain';
+import { LabMiniFabButton } from '@lab/button/ui';
 import { LabFormTextControl } from '@lab/forms/ui';
 import { LabLoading } from '@lab/ui';
 import { LabVirtualItem, LabVirtualScroll } from '@lab/virtual-scroll';
 
 @Component({
   selector: 'lib-brand-list',
-  imports: [LabVirtualScroll, LabLoading, LabFormTextControl],
+  imports: [LabVirtualScroll, LabLoading, LabFormTextControl, LabMiniFabButton],
   templateUrl: './brand-list.html',
   host: {
     style: 'display: flex; flex-direction: column; width: 100%; height: 100%;',
@@ -54,5 +55,9 @@ export class BrandList {
 
   public onBrandSelected(id: string) {
     this.router.navigate([`/brands/${id}`]);
+  }
+
+  public reloadBrands() {
+    this.brandsFacade.reloadBrands();
   }
 }

@@ -11,6 +11,7 @@ describe('BrandsFacade', () => {
   let store: MockStore;
   let mockAllBrandsSelector: MemoizedSelector<object, BrandEntity[]>;
   let mockLoadedSelector: MemoizedSelector<object, boolean>;
+  let mockBrandSelectedLoadedSelector: MemoizedSelector<object, boolean>;
   let mockBrandSelectedSelector: MemoizedSelector<object, BrandSelected | null>;
 
   const mockBrands: BrandEntity[] = [
@@ -46,6 +47,10 @@ describe('BrandsFacade', () => {
       BrandsSelectors.selectBrandsLoaded,
       true,
     );
+    mockBrandSelectedLoadedSelector = store.overrideSelector(
+      BrandsSelectors.selectBrandSelectedLoaded,
+      true,
+    );
     mockBrandSelectedSelector = store.overrideSelector(
       BrandsSelectors.selectBrandSelected,
       mockBrandSelected,
@@ -67,6 +72,10 @@ describe('BrandsFacade', () => {
       expect(facade.loaded()).toBe(true);
     });
 
+    it('should expose brandSelectedLoaded as signal', () => {
+      expect(facade.brandSelectedLoaded()).toBe(true);
+    });
+
     it('should expose brandSelected as signal', () => {
       expect(facade.brandSelected()).toEqual(mockBrandSelected);
     });
@@ -82,6 +91,16 @@ describe('BrandsFacade', () => {
       expect(dispatchSpy).toHaveBeenCalledWith(
         BrandsActions.getBrandById({ Make_ID: makeId }),
       );
+    });
+  });
+
+  describe('reloadBrands', () => {
+    it('should dispatch initBrands action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      facade.reloadBrands();
+
+      expect(dispatchSpy).toHaveBeenCalledWith(BrandsActions.initBrands());
     });
   });
 });

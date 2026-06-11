@@ -31,3 +31,5 @@ export const loadBrandsFailure = createAction(
   '[Brands/API] Load Brands Failure',
   props<{ error: any }>(),
 );
+
+export const reloadBrands = createAction('[Brands/API] Reload brands');

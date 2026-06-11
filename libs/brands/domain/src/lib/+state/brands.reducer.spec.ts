@@ -52,7 +52,15 @@ describe('Brands Reducer', () => {
       expect(result.error).toBeNull();
     });
 
-    it('getBrandByIdSuccess should set brandSelected', () => {
+    it('getBrandById should set brandSelectedLoaded to false', () => {
+      const action = BrandsActions.getBrandById({ Make_ID: '440' });
+
+      const result: BrandsState = brandsReducer(initialBrandsState, action);
+
+      expect(result.brandSelectedLoaded).toBe(false);
+    });
+
+    it('getBrandByIdSuccess should set brandSelected and brandSelectedLoaded to true', () => {
       const vehicleTypes = [
         { VehicleTypeId: 2, VehicleTypeName: 'Passenger Car' },
       ];
@@ -73,6 +81,17 @@ describe('Brands Reducer', () => {
       const result: BrandsState = brandsReducer(initialBrandsState, action);
 
       expect(result.brandSelected).toEqual({ vehicleTypes, models });
+      expect(result.brandSelectedLoaded).toBe(true);
+    });
+
+    it('getBrandByIdFailure should set brandSelected to null and brandSelectedLoaded to true', () => {
+      const error = 'API Error';
+      const action = BrandsActions.getBrandByIdFailure({ error });
+
+      const result: BrandsState = brandsReducer(initialBrandsState, action);
+
+      expect(result.brandSelected).toBeNull();
+      expect(result.brandSelectedLoaded).toBe(true);
     });
   });
 

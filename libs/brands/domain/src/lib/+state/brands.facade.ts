@@ -11,6 +11,9 @@ export class BrandsFacade {
    * Expose slices as Signals through the facade.
    */
   public loaded = this.store.selectSignal(BrandsSelectors.selectBrandsLoaded);
+  public brandSelectedLoaded = this.store.selectSignal(
+    BrandsSelectors.selectBrandSelectedLoaded,
+  );
   public allBrands = this.store.selectSignal(BrandsSelectors.selectAllBrands);
   public selectedBrands = this.store.selectSignal(BrandsSelectors.selectEntity);
   public brandSelected = this.store.selectSignal(
@@ -20,5 +23,9 @@ export class BrandsFacade {
   /**Dispatch Actions */
   public getBrandsById(Make_ID: string) {
     this.store.dispatch(BrandsActions.getBrandById({ Make_ID }));
+  }
+
+  public reloadBrands() {
+    this.store.dispatch(BrandsActions.initBrands());
   }
 }

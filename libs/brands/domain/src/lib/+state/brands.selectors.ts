@@ -16,6 +16,11 @@ export const selectBrandsLoaded = createSelector(
   (state: BrandsState) => state.loaded,
 );
 
+export const selectBrandSelectedLoaded = createSelector(
+  selectBrandsState,
+  (state: BrandsState) => state.brandSelectedLoaded,
+);
+
 export const selectBrandsError = createSelector(
   selectBrandsState,
   (state: BrandsState) => state.error,

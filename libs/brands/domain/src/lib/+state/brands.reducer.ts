@@ -7,9 +7,10 @@ import { BrandEntity, BrandSelected } from './brands.models';
 export const BRANDS_FEATURE_KEY = 'brands';
 
 export interface BrandsState extends EntityState<BrandEntity> {
-  selectedId?: string | number; // which Brands record has been selected
-  loaded: boolean; // has the Brands list been loaded
-  error?: string | null; // last known error (if any)
+  selectedId?: string | number;
+  loaded: boolean;
+  brandSelectedLoaded: boolean;
+  error?: string | null;
   brandSelected: BrandSelected | null;
 }
 
@@ -25,6 +26,7 @@ export const brandsAdapter: EntityAdapter<BrandEntity> =
 
 export const initialBrandsState: BrandsState = brandsAdapter.getInitialState({
   loaded: false,
+  brandSelectedLoaded: false,
   brandSelected: null,
 });
 
@@ -45,6 +47,16 @@ const reducer = createReducer(
   on(BrandsActions.getBrandByIdSuccess, (state, { vehicleTypes, models }) => ({
     ...state,
     brandSelected: { vehicleTypes, models },
+    brandSelectedLoaded: true,
+  })),
+  on(BrandsActions.getBrandByIdFailure, (state) => ({
+    ...state,
+    brandSelected: null,
+    brandSelectedLoaded: true,
+  })),
+  on(BrandsActions.getBrandById, (state) => ({
+    ...state,
+    brandSelectedLoaded: false,
   })),
 );
 

@@ -1,12 +1,23 @@
 @if (loaded() ) {
 
-<lab-form-text-control
-  label="Find a brand"
-  placeholder="Filter by mark name or mark id"
-  hint="Available brands catalog"
-  iconSuffix="search"
-  [searchTerm]="searchTerm"
-></lab-form-text-control>
+<h1 class="text-2xl font-bold m-6">Brands Available</h1>
+
+<div class="flex flex-row">
+  <lab-form-text-control
+    class="flex flex-1"
+    label="Find a brand"
+    placeholder="Filter by mark name or mark id"
+    hint="Find available brands catalog"
+    iconSuffix="search"
+    [searchTerm]="searchTerm"
+  ></lab-form-text-control>
+  <lab-mini-fab-button
+    class="pt-6 pr-4"
+    arialLabel="Reload brands"
+    icon="refresh"
+    (execute)="reloadBrands()"
+  ></lab-mini-fab-button>
+</div>
 
 <div class="flex flex-1">
   <lab-virtual-scroll

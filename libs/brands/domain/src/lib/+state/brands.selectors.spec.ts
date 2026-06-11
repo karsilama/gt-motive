@@ -10,6 +10,7 @@ import {
 import {
   selectAllBrands,
   selectBrandSelected,
+  selectBrandSelectedLoaded,
   selectBrandsEntities,
   selectBrandsError,
   selectBrandsLoaded,
@@ -47,12 +48,17 @@ describe('Brands Selectors', () => {
     state = {
       ...brandsAdapter.setAll(mockBrands, initialBrandsState),
       loaded: true,
+      brandSelectedLoaded: true,
       error: null,
       selectedId: '440',
       brandSelected: mockBrandSelected,
     };
 
     store.overrideSelector(selectBrandsLoaded, state.loaded);
+    store.overrideSelector(
+      selectBrandSelectedLoaded,
+      state.brandSelectedLoaded,
+    );
     store.overrideSelector(selectBrandsError, state.error);
     store.overrideSelector(selectAllBrands, mockBrands);
     store.overrideSelector(selectBrandsEntities, {
@@ -67,6 +73,13 @@ describe('Brands Selectors', () => {
   describe('selectBrandsLoaded', () => {
     it('should return the loaded state', () => {
       const result = selectBrandsLoaded.projector(state);
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('selectBrandSelectedLoaded', () => {
+    it('should return the brandSelectedLoaded state', () => {
+      const result = selectBrandSelectedLoaded.projector(state);
       expect(result).toBe(true);
     });
   });
