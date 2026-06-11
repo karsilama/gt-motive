@@ -4,5 +4,19 @@
   "root": "libs/lab/storage",
   "sourceRoot": "libs/lab/storage/src",
   "projectType": "library",
-  "targets": {}
+  "tags": ["scope:lab", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/lab/storage/jest.config.ts",
+        "tsConfig": "libs/lab/storage/tsconfig.spec.json",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
 }
