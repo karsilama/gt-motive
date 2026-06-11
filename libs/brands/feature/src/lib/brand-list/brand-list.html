@@ -1,24 +1,22 @@
 @if (loaded() ) {
 
 <h1 class="text-2xl font-bold m-6" i18n="@@BRANDS_CATALOG_TITLE">
-  Brands Available
+  BRANDS_CATALOG_TITLE
 </h1>
 
 <div class="flex flex-row">
   <lab-form-text-control
-    class="flex flex-1"
-    label="Find a brand"
-    i18n-label="@@BRAND_LIST_FIND_BRAND_LABEL"
-    placeholder="Filter by mark name or mark id"
-    i18n-placeholder="@@BRAND_LIST_FILTER_BY_MARK_PLACEHOLDER"
-    hint="Find available brands catalog"
-    i18n-hint="@@BRAND_LIST_FIND_AVAILABLE_BRANDS_HINT"
-    iconSuffix="search"
     [searchTerm]="searchTerm"
+    class="flex flex-1"
+    label="BRAND_LIST_FIND_BRAND_LABEL"
+    i18n-label="@@BRAND_LIST_FIND_BRAND_LABEL"
+    placeholder="BRAND_LIST_FILTER_BY_MARK_PLACEHOLDER"
+    i18n-placeholder="@@BRAND_LIST_FILTER_BY_MARK_PLACEHOLDER"
+    [hint]="hint"
   ></lab-form-text-control>
   <lab-mini-fab-button
     class="pt-6 pr-4"
-    arialLabel="Reload brands"
+    arialLabel="BRAND_LIST_RELOAD_BRANDS_ARIALABEL"
     i18n-arialLabel="@@BRAND_LIST_RELOAD_BRANDS_ARIALABEL"
     icon="refresh"
     (execute)="reloadBrands()"

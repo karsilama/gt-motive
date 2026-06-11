@@ -1,5 +1,24 @@
 import { Component } from '@angular/core';
+import { loadTranslations } from '@angular/localize';
 import { RouterModule } from '@angular/router';
+import { environment } from '../environments/environment';
+
+if (!environment.production) {
+  loadTranslations({
+    BRANDS_CATALOG_TITLE: 'Brands Available',
+    BRAND_LIST_FIND_BRAND_LABEL: 'Find a brand',
+    BRAND_LIST_FILTER_BY_MARK_PLACEHOLDER: 'Filter by mark name or mark id',
+    BRAND_LIST_FIND_AVAILABLE_BRANDS_HINT: 'Find available brands catalog',
+    BRAND_LIST_RELOAD_BRANDS_ARIALABEL: 'Reload brands',
+    BRAND_EDITION_TITLE: 'Brand Details',
+    BRAND_EDIT_BACK_BUTTON: 'Back to brands',
+    BRAND_EDIT_BACK_BUTTON_ARIALABEL: 'Go back',
+    BRAND_EDIT_VEHICLE_TYPES_TITLE: 'Vehicle Types',
+    BRAND_EDIT_NO_VEHICLE_TYPES: 'No vehicle types available.',
+    BRAND_EDIT_MODELS_TITLE: 'Models',
+    BRAND_EDIT_NO_MODELS: 'No models available.',
+  });
+}
 
 @Component({
   imports: [RouterModule],

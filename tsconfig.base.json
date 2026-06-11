@@ -15,7 +15,7 @@
     "skipLibCheck": true,
     "strict": true,
     "skipDefaultLibCheck": true,
-    "types": ["jest"],
+    "types": ["jest", "@angular/localize"],
     "baseUrl": ".",
     "paths": {
       "@lab/virtual-scroll": ["./libs/lab/virtual-scroll/src/index.ts"],

@@ -32,6 +32,8 @@ export class BrandList {
 
   public loaded = this.brandsFacade.loaded;
 
+  public hint = $localize`:@@BRAND_LIST_FIND_AVAILABLE_BRANDS_HINT`;
+
   public dataSource = computed(() =>
     this.brandsFacade
       .allBrands()
