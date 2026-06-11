@@ -1,5 +1,7 @@
 # General structure of `libs/`
 
+Pleas use `nx serve` to run local project
+
 This project uses an Nx monorepo with a `libs/` folder that groups shared logic, domain layers, and reusable components.
 
 ## Overview
